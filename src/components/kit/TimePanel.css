@@ -14,4 +14,4 @@
 .kit-time__ticks { display: flex; justify-content: space-between; margin-top: var(--s1); }
 .kit-time__tick { width: 1px; height: var(--s2); background: var(--glass-border); }
 .kit-time__tick[data-on="true"] { background: var(--ink-dim); }
-@media (max-width: 640px) { .kit-time { left: var(--s2); right: var(--s2); min-width: 0; bottom: 7rem; } }
+@media (max-width: 640px) { .kit-time { left: var(--s2); right: var(--s2); min-width: 0; bottom: 6rem; } }

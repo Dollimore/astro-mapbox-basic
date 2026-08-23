@@ -32,7 +32,7 @@ test.describe('kit components', () => {
     await expect(page.locator('html')).toHaveAttribute('data-map-ready', 'true');
   });
 
-  test('all ten components are present', async ({ page }) => {
+  test('all kit components are present', async ({ page }) => {
     await expect(page.getByTestId('headline-block')).toBeVisible();
     await expect(page.getByTestId('counter-strip')).toBeVisible();
     await expect(page.getByTestId('control-stack')).toBeVisible();
@@ -44,6 +44,43 @@ test.describe('kit components', () => {
     const pins = await page.getByTestId('story-pin').count();
     expect(pins).toBeGreaterThan(0);
     expect(pins).toBeLessThanOrEqual(4);
+    // The sidebar is always mounted so its exit animates; closed means hidden.
+    await expect(page.getByTestId('detail-sidebar')).toHaveAttribute('data-open', 'false');
+  });
+
+  test('clicking a facility opens the detail sidebar', async ({ page }, testInfo) => {
+    // Feature positions are desktop pixel coordinates; a 412px viewport frames
+    // a different part of the map entirely.
+    test.skip(testInfo.project.name === 'mobile', 'coordinates are viewport-specific');
+    for (const [x, y] of [[574,451],[828,336],[1015,410],[869,514],[824,536]] as const) {
+      await page.mouse.click(x, y);
+      await page.waitForTimeout(500);
+      if (await page.locator('[data-testid="detail-sidebar"][data-open="true"]').count()) break;
+    }
+    const panel = page.getByTestId('detail-sidebar');
+    await expect(panel).toHaveAttribute('data-open', 'true');
+    await expect(page.getByTestId('detail-badge')).toBeVisible();
+    await expect(page.getByTestId('stat-tile')).toBeVisible();
+    await expect(page.getByTestId('gauge')).toBeVisible();
+    await page.getByTestId('detail-close').click();
+    await expect(panel).toHaveAttribute('data-open', 'false');
+  });
+
+  test('mode toggle flips the theme and the data survives it', async ({ page }) => {
+    const html = page.locator('html');
+    const before = await html.getAttribute('data-mode');
+
+    await page.getByRole('button', { name: /mode/i }).click();
+    await expect(html).not.toHaveAttribute('data-mode', before ?? 'light');
+
+    // The basemap is rebuilt for the new mode. Regression: a setStyle-based swap
+    // left the point layer present, on top, correctly coloured — and invisible.
+    for (let i = 0; i < 60; i++) {
+      if (await html.getAttribute('data-map-ready') === 'true') break;
+      await page.waitForTimeout(500);
+    }
+    await expect(html).toHaveAttribute('data-features-rendered', '10');
+    await expect(html).toHaveAttribute('data-features-on-top', 'true');
   });
 
   test('panels sit in their grammar positions', async ({ page }, testInfo) => {

@@ -1,0 +1,23 @@
+.kit-gauge { display: flex; flex-direction: column; align-items: center; gap: var(--s2); }
+.kit-gauge__dial { position: relative; display: grid; place-items: center; }
+.kit-gauge__dial svg { display: block; }
+
+.kit-gauge__track { stroke: var(--sunken); }
+.kit-gauge__value {
+  stroke: var(--brand);
+  transition: stroke-dasharray var(--t-slow) var(--ease);
+}
+.kit-gauge[data-tone="success"] .kit-gauge__value { stroke: var(--success); }
+.kit-gauge[data-tone="alert"]   .kit-gauge__value { stroke: var(--alert); }
+.kit-gauge[data-tone="info"]    .kit-gauge__value { stroke: var(--info); }
+.kit-gauge[data-tone="danger"]  .kit-gauge__value { stroke: var(--danger); }
+
+.kit-gauge__readout {
+  position: absolute;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--strong);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.kit-gauge__label { font-size: var(--text-xs); color: var(--subtle); text-align: center; }

@@ -1,40 +1,210 @@
+/* =============================================================================
+   TOKENS — the entire visual identity. Nothing outside src/theme/ holds a value.
+   Three layers, in dependency order:
+     1. PRIMITIVES  raw palette + scales. Never referenced by a component.
+     2. SEMANTIC    canvas/raised/stroke/primary/… flipped by [data-mode].
+     3. CONTRACT    the names kit components consume. Aliases onto layer 2, which
+                    is what lets a whole re-skin happen without touching a .tsx.
+   ============================================================================= */
+
+/* ---------- 1 · PRIMITIVES ------------------------------------------------- */
+:root, :host {
+  --spacing: 0.25rem;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+
+  --color-red-50:  oklch(97.1% .013 17.38);
+  --color-red-200: oklch(88.5% .062 18.334);
+  --color-red-300: oklch(80.8% .114 19.571);
+  --color-red-700: oklch(50.5% .213 27.518);
+  --color-red-800: oklch(44.4% .177 26.899);
+  --color-red-950: oklch(25.8% .092 26.042);
+
+  --color-amber-50:  oklch(98.7% .022 95.277);
+  --color-amber-200: oklch(92.4% .12 95.746);
+  --color-amber-300: oklch(87.9% .169 91.605);
+  --color-amber-700: oklch(55.5% .163 48.998);
+  --color-amber-800: oklch(47.3% .137 46.201);
+  --color-amber-950: oklch(27.9% .077 45.635);
+
+  --color-emerald-50:  oklch(97.9% .021 166.113);
+  --color-emerald-200: oklch(90.5% .093 164.15);
+  --color-emerald-300: oklch(84.5% .143 164.978);
+  --color-emerald-700: oklch(50.8% .118 165.612);
+  --color-emerald-800: oklch(43.2% .095 166.913);
+  --color-emerald-950: oklch(26.2% .051 172.552);
+
+  --color-blue-50:  oklch(97% .014 254.604);
+  --color-blue-200: oklch(88.2% .059 254.128);
+  --color-blue-300: oklch(80.9% .105 251.813);
+  --color-blue-700: oklch(48.8% .243 264.376);
+  --color-blue-800: oklch(42.4% .199 265.638);
+  --color-blue-950: oklch(28.2% .091 267.935);
+
+  --radius-2xl: 1rem;
+  --radius-chip: 0.5rem;
+  --radius-stamp: 0.25rem;
+
+  --font-ui: Inter, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+               "Liberation Mono", "Courier New", monospace;
+
+  --safe-top: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --safe-right: var(--safe-area-inset-right, env(safe-area-inset-right, 0px));
+  --safe-bottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+  --safe-left: var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
+}
+
+/* ---------- 2 · SEMANTIC · light ------------------------------------------- */
 :root {
-  /* ink — monochrome UI, no accent in chrome. The map carries all colour. */
-  --ink: #F5F2EE;
-  --ink-dim: #9A9A96;
-  --ink-max: #FFFFFF;
+  --canvas: #fafafa;
+  --raised: #ffffff;
+  --sunken: #f5f5f5;
+  --hover:  #f5f5f5;
+  --brand:  #000000;
 
-  /* liquid glass surfaces */
-  --glass: rgba(12, 12, 12, 0.72);
-  --glass-strong: rgba(12, 12, 12, 0.86);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-blur: 16px;
-  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
-  --hairline: rgba(255, 255, 255, 0.12);
+  --primary: #525252;
+  --strong:  #171717;
+  --subtle:  #737373;
 
-  /* type */
-  --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
-  --font-ui: "Inter", system-ui, sans-serif;
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.25rem;
-  --text-xl: 1.75rem;
+  --stroke:        #e6e6e6;
+  --stroke-strong: #d4d4d4;
 
-  /* space + shape */
-  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s6: 24px; --s8: 32px;
-  --radius-panel: 14px;
-  --radius-chip: 8px;
-  --radius-stamp: 2px;
+  --info:         var(--color-blue-700);
+  --info-subtle:  var(--color-blue-200);
+  --info-muted:   var(--color-blue-50);
+  --success:        var(--color-emerald-700);
+  --success-subtle: var(--color-emerald-200);
+  --success-muted:  var(--color-emerald-50);
+  --alert:        var(--color-amber-700);
+  --alert-subtle: var(--color-amber-200);
+  --alert-muted:  var(--color-amber-50);
+  --danger:        var(--color-red-700);
+  --danger-subtle: var(--color-red-200);
+  --danger-muted:  var(--color-red-50);
 
-  /* motion */
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --price: #18214f;
+
+  /* Panel fill: 60% of the raised surface. Hex-alpha first for older engines,
+     color-mix below where supported — the same pattern the source theme uses. */
+  --panel-fill: #ffffff99;        /* 60% — the source theme, verbatim */
+  --panel-fill-map: #ffffffeb;    /* 92% — chrome floating over live map tiles */
+  --panel-fill-solid: #fffffff2;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  :root {
+    --panel-fill: color-mix(in oklab, var(--raised) 60%, transparent);
+    --panel-fill-map: color-mix(in oklab, var(--raised) 92%, transparent);
+    --panel-fill-solid: color-mix(in oklab, var(--raised) 95%, transparent);
+  }
+}
+
+/* ---------- 2 · SEMANTIC · dark -------------------------------------------- */
+[data-mode="dark"] {
+  --canvas: #0a0a0a;
+  --raised: #171717;
+  --sunken: #262626;
+  --hover:  #262626;
+  --brand:  #ffffff;
+
+  --primary: #e6e6e6;
+  --strong:  #ffffff;
+  --subtle:  #a3a3a3;
+
+  --stroke:        #262626;
+  --stroke-strong: #525252;
+
+  --info:         var(--color-blue-300);
+  --info-subtle:  var(--color-blue-800);
+  --info-muted:   var(--color-blue-950);
+  --success:        var(--color-emerald-300);
+  --success-subtle: var(--color-emerald-800);
+  --success-muted:  var(--color-emerald-950);
+  --alert:        var(--color-amber-300);
+  --alert-subtle: var(--color-amber-800);
+  --alert-muted:  var(--color-amber-950);
+  --danger:        var(--color-red-300);
+  --danger-subtle: var(--color-red-800);
+  --danger-muted:  var(--color-red-950);
+
+  --price: #848ec0;
+
+  --panel-fill: #26262699;
+  --panel-fill-map: #171717eb;
+  --panel-fill-solid: #171717f2;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  [data-mode="dark"] {
+    --panel-fill: color-mix(in oklab, var(--color-neutral-800) 60%, transparent);
+    --panel-fill-map: color-mix(in oklab, var(--raised) 92%, transparent);
+    --panel-fill-solid: color-mix(in oklab, var(--raised) 95%, transparent);
+  }
+}
+
+/* ---------- 3 · CONTRACT — what kit components actually consume ------------
+   Components reference ONLY these names. Re-skinning the whole product is
+   re-pointing this block; not one .tsx changes. That is the entire claim.    */
+:root {
+  --ink:     var(--primary);
+  --ink-dim: var(--subtle);
+  --ink-max: var(--strong);
+
+  /* Chrome here always floats over live map tiles, where the source theme's
+     60% fill leaves map labels bleeding through the text. --panel-fill keeps
+     their exact value for any surface that sits on a plain canvas. */
+  --glass:        var(--panel-fill-map);
+  --glass-strong: var(--panel-fill-solid);
+  --glass-border: var(--stroke);
+  --glass-blur:   14px;
+  --glass-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+  --hairline:     var(--stroke-strong);
+
+  /* 14px base, matching the source theme's body size. */
+  --text-xs:   0.75rem;
+  --text-sm:   0.8125rem;
+  --text-base: 0.875rem;
+  --text-lg:   1.0625rem;
+  --text-xl:   1.5rem;
+
+  --s1: calc(var(--spacing) * 1);
+  --s2: calc(var(--spacing) * 2);
+  --s3: calc(var(--spacing) * 3);
+  --s4: calc(var(--spacing) * 4);
+  --s6: calc(var(--spacing) * 6);
+  --s8: calc(var(--spacing) * 8);
+
+  --radius-panel: var(--radius-2xl);
+
+  /* Sidebar system. 13rem/4rem carried over from the source theme's nav; the
+     facility detail panel needs more room for a stat block, so it gets its own. */
+  --sidebar-width: 13rem;
+  --sidebar-width-icon: 4rem;
+  --detail-width: 22rem;
+
+  /* Right-anchored chrome adds this, so panels slide clear of an open sidebar
+     instead of hiding behind it. MapRoot sets it; default 0 means no shift. */
+  --chrome-inset-right: 0px;
+
+  --ease:   cubic-bezier(0.22, 1, 0.36, 1);
   --t-fast: 140ms;
-  --t-med: 240ms;
+  --t-med:  240ms;
+  --t-slow: 500ms;
 
-  /* data status accents — the ONLY colour a project chooses */
-  --status-operational: #1F7A4D;
-  --status-construction: #D89A2B;
-  --status-announced: #5A6B7C;
-  --status-halted: #B23B3B;
+  /* Data status accents ride the semantic system, so they re-tune per mode
+     automatically — 700-step in light, 300-step in dark. */
+  --status-operational:  var(--success);
+  --status-construction: var(--alert);
+  --status-announced:    var(--info);
+  --status-halted:       var(--danger);
+}
+
+[data-mode="dark"] {
+  --glass-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.35);
 }

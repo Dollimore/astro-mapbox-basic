@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { getMapboxToken } from '../../lib/mapbox.js';
-import { BASEMAP_STYLE } from '../../theme/map-style.js';
+import { basemapFor, getMode, type Mode } from '../../theme/map-style.js';
 import './MapRoot.css';
 
 export type MapRootProps = {
@@ -10,6 +10,8 @@ export type MapRootProps = {
   zoom?: number;
   children?: ReactNode;
   onReady?: (map: mapboxgl.Map) => void;
+  /** CSS length the right-anchored chrome should clear, e.g. an open sidebar. */
+  insetRight?: string;
 };
 
 export function MapRoot({
@@ -17,20 +19,34 @@ export function MapRoot({
   zoom = 10.5,
   children,
   onReady,
+  insetRight = '0px',
 }: MapRootProps) {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [mode, setModeState] = useState<Mode>('light');
+  const previousView = useRef<{ center: [number, number]; zoom: number } | null>(null);
+
+  // Track [data-mode] so the map can be rebuilt for it.
+  useEffect(() => {
+    setModeState(getMode());
+    const observer = new MutationObserver(() => setModeState(getMode()));
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-mode'],
+    });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
-    if (!container.current || map.current) return;
+    if (!container.current) return;
     try {
       mapboxgl.accessToken = getMapboxToken();
       map.current = new mapboxgl.Map({
         container: container.current,
-        style: BASEMAP_STYLE,
-        center,
-        zoom,
+        style: basemapFor(mode),
+        center: previousView.current?.center ?? center,
+        zoom: previousView.current?.zoom ?? zoom,
         attributionControl: true,
       });
       map.current.on('load', () => {
@@ -44,12 +60,20 @@ export function MapRoot({
 
     const onResize = () => map.current?.resize();
     window.addEventListener('resize', onResize);
+
     return () => {
       window.removeEventListener('resize', onResize);
+      // Preserve the viewport across a rebuild so a mode flip does not yank
+      // the user back to the initial camera.
+      if (map.current) {
+        const c = map.current.getCenter();
+        previousView.current = { center: [c.lng, c.lat], zoom: map.current.getZoom() };
+      }
+      document.documentElement.removeAttribute('data-map-ready');
       map.current?.remove();
       map.current = null;
     };
-  }, []);
+  }, [mode]);
 
   return (
     <div className="map-root" data-testid="map-root">
@@ -59,7 +83,12 @@ export function MapRoot({
           {error}
         </div>
       )}
-      <div className="map-root__chrome">{children}</div>
+      <div
+        className="map-root__chrome"
+        style={{ ['--chrome-inset-right' as string]: insetRight }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

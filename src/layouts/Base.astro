@@ -1,4 +1,5 @@
 ---
+import '@fontsource-variable/inter';
 import '../theme/tokens.css';
 import '../theme/recipes.css';
 
@@ -9,16 +10,36 @@ const { title, description = 'A basic Astro + Mapbox map.' } = Astro.props;
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="preconnect" href="https://api.mapbox.com" />
+    <meta name="theme-color" content="" />
+    <script is:inline>
+      // Resolve the mode BEFORE first paint. Without this the page paints the
+      // light canvas and then flips, which is the single most obvious way a
+      // themed site looks unfinished.
+      (function () {
+        try {
+          var stored = localStorage.getItem('map-kit-mode');
+          var mode = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.dataset.mode = mode;
+          document.documentElement.style.colorScheme = mode;
+          // theme-color cannot take a CSS var, so read the resolved token
+          // rather than hardcoding a hex that check:tokens would (rightly) reject.
+          requestAnimationFrame(function () {
+            var canvas = getComputedStyle(document.documentElement)
+              .getPropertyValue('--canvas').trim();
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta && canvas) meta.setAttribute('content', canvas);
+          });
+        } catch (e) {
+          document.documentElement.dataset.mode = 'light';
+        }
+      })();
+    </script>
   </head>
   <body>
     <slot />
-    <style is:global>
-      html, body { margin: 0; height: 100%; background: var(--glass-strong); }
-      body { font-family: var(--font-ui); color: var(--ink); }
-    </style>
   </body>
 </html>

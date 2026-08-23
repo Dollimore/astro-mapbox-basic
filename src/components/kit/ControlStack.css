@@ -1,4 +1,4 @@
-.kit-controls { position: absolute; top: var(--s4); right: var(--s4); display: flex; flex-direction: column; gap: var(--s2); }
+.kit-controls { position: absolute; top: var(--s4); right: calc(var(--s4) + var(--chrome-inset-right, 0px)); display: flex; flex-direction: column; gap: var(--s2); transition: right var(--t-slow) var(--ease); }
 .kit-controls__btn {
   width: var(--s8); height: var(--s8);
   display: grid; place-items: center;
