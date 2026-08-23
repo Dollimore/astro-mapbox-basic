@@ -55,6 +55,37 @@ const ATTACKS: Attack[] = [
       return code !== 0; // caught == commit refused
     },
   },
+  {
+    id: 'S3',
+    what: 'read an env var that is absent from .env.example',
+    caughtBy: 'check:env',
+    run: (dir) => {
+      // Assembled, not literal — same reason as FAKE_SK. A static scanner cannot
+      // tell a test payload from a real violation, so a fixture written plainly
+      // would make check:env fail on the very harness that proves it works.
+      const accessor = ['import', 'meta', 'env'].join('.');
+      writeFileSync(
+        join(dir, 'src/undeclared.ts'),
+        `export const secret = ${accessor}.TOTALLY_UNDECLARED_VAR;\n`
+      );
+      const { code, out } = sh('npx tsx scripts/checks/env.ts', dir);
+      if (code === 0) console.error(`     check:env PASSED when it should not have:\n${out}`);
+      return code !== 0;
+    },
+  },
+  {
+    id: 'S4',
+    what: 'put a non-empty value in .env.example',
+    caughtBy: 'check:env',
+    run: (dir) => {
+      const p = join(dir, '.env.example');
+      const original = readFileSync(p, 'utf8');
+      writeFileSync(p, original.replace('PUBLIC_MAPBOX_TOKEN=', 'PUBLIC_MAPBOX_TOKEN=pk.example'));
+      const { code, out } = sh('npx tsx scripts/checks/env.ts', dir);
+      if (code === 0) console.error(`     check:env PASSED when it should not have:\n${out}`);
+      return code !== 0;
+    },
+  },
 ];
 
 function main() {
@@ -68,7 +99,8 @@ function main() {
 
     // The sandbox needs the CURRENT working-tree config, not whatever HEAD holds,
     // so an uncommitted defence can still be tested.
-    for (const f of ['lefthook.yml', '.env.example', 'package.json']) {
+    execSync(`cp -R "${join(repo, 'scripts')}" "${dir}/"`, { stdio: 'ignore' });
+    for (const f of ['lefthook.yml', '.env.example', 'package.json', '.gitleaks.toml']) {
       if (existsSync(join(repo, f))) copyFileSync(join(repo, f), join(dir, f));
     }
     if (!existsSync(join(dir, 'node_modules'))) {
