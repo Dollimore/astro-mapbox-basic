@@ -1,5 +1,6 @@
 {
   "name": "astro-mapbox-basic",
   "compatibility_date": "2026-08-23",
+  "account_id": "cc56225be80d8d7d596f04053d938950",
   "assets": { "directory": "./dist" }
 }

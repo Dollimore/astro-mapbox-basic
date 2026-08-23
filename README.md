@@ -7,6 +7,8 @@ on a cold npm cache** (29s install, 4s build and serve).
 "Basic" is the promise, not a description of the engineering. The hard decisions
 are already made.
 
+**Live demo:** https://astro-mapbox-basic.cold-resonance-79f9.workers.dev
+
 ---
 
 ## Quickstart
