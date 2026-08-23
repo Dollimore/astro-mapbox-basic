@@ -6,8 +6,12 @@ pre-commit:
     gitleaks:
       run: gitleaks git --staged --no-banner --redact
     token-literal:
+      # ADDED lines only. `git diff -G` matches added *or removed* lines, which
+      # made it impossible to ever commit a change that REMOVES a leaked token —
+      # exactly the commit you most need to be able to make.
       run: |
-        if git diff --staged -G'(pk|sk)\.ey[A-Za-z0-9._-]{20,}' --name-only | grep -q .; then
-          echo "✗ Mapbox token literal found in staged changes. Read docs/SECRETS.md."
+        if git diff --staged -U0 --no-color | grep -E '^\+' | grep -vE '^\+\+\+' \
+             | grep -qE '(pk|sk)\.ey[A-Za-z0-9._-]{20,}'; then
+          echo "✗ Mapbox token literal found in ADDED lines. Read docs/SECRETS.md."
           exit 1
         fi
