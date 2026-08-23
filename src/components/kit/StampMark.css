@@ -1,0 +1,4 @@
+.kit-stamp { display: inline-flex; gap: var(--s2); align-items: baseline; }
+.kit-stamp__label { color: var(--ink); text-transform: uppercase; letter-spacing: 0.06em; }
+.kit-stamp__coords { color: var(--ink-dim); }
+.kit-stamp[data-variant="compact"] { padding: 0; border: none; }

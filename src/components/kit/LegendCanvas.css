@@ -1,0 +1,8 @@
+.kit-legend { position: absolute; bottom: var(--s4); right: var(--s4); padding: var(--s3) var(--s4); min-width: 11rem; }
+.kit-legend__title { margin: 0 0 var(--s2); font-size: var(--text-xs); color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.kit-legend__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--s1); }
+.kit-legend__item { display: flex; align-items: center; gap: var(--s2); font-size: var(--text-sm); color: var(--ink); }
+.kit-legend__swatch { width: var(--s3); height: var(--s3); border-radius: var(--radius-stamp); border: 1px solid var(--glass-border); }
+.kit-legend__ramp { height: var(--s2); border-radius: var(--radius-stamp); }
+.kit-legend__ticks { display: flex; justify-content: space-between; margin-top: var(--s1); font-size: var(--text-xs); color: var(--ink-dim); }
+@media (max-width: 640px) { .kit-legend { left: var(--s2); right: var(--s2); bottom: var(--s2); } }

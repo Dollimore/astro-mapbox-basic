@@ -1,0 +1,9 @@
+.kit-card { position: absolute; top: 50%; right: var(--s4); transform: translateY(-50%); padding: var(--s4); width: 18rem; display: flex; flex-direction: column; gap: var(--s3); }
+.kit-card__head { display: flex; align-items: start; justify-content: space-between; gap: var(--s2); }
+.kit-card__title { font-size: var(--text-lg); }
+.kit-card__close { background: none; border: none; color: var(--ink-dim); font-size: var(--text-lg); cursor: pointer; line-height: 1; transition: color var(--t-fast) var(--ease); }
+.kit-card__close:hover { color: var(--ink-max); }
+.kit-card__stat { display: flex; align-items: baseline; gap: var(--s2); }
+.kit-card__stat-value { font-size: var(--text-xl); color: var(--ink-max); }
+.kit-card__stat-label { font-size: var(--text-xs); color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+@media (max-width: 640px) { .kit-card { top: auto; bottom: var(--s2); left: var(--s2); right: var(--s2); width: auto; transform: none; } }

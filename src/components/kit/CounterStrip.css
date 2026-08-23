@@ -1,0 +1,8 @@
+.kit-counter { display: flex; flex-direction: column; gap: var(--s2); }
+.kit-counter__primary { display: flex; align-items: baseline; gap: var(--s2); }
+.kit-counter__value { font-size: var(--text-xl); color: var(--ink-max); }
+.kit-counter__label { font-size: var(--text-xs); color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.kit-counter__secondary { display: flex; gap: var(--s4); flex-wrap: wrap; }
+.kit-counter__pair { display: inline-flex; gap: var(--s1); align-items: baseline; color: var(--ink); font-size: var(--text-sm); }
+.kit-counter__method { font-size: var(--text-xs); color: var(--ink-dim); text-decoration: underline; transition: color var(--t-fast) var(--ease); }
+.kit-counter__method:hover { color: var(--ink); }

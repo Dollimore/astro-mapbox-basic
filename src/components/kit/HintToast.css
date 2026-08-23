@@ -1,0 +1,12 @@
+.kit-hint {
+  position: absolute;
+  left: 50%;
+  bottom: var(--s8);
+  transform: translateX(-50%);
+  padding: var(--s2) var(--s4);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-chip);
+  opacity: 1;
+  transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease);
+}
+.kit-hint[data-leaving="true"] { opacity: 0; transform: translateX(-50%) translateY(var(--s2)); }

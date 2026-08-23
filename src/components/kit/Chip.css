@@ -1,0 +1,2 @@
+.kit-chip { line-height: 1; white-space: nowrap; }
+.kit-chip:active { transform: translateY(1px); }

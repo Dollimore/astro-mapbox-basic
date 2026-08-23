@@ -1,0 +1,11 @@
+.kit-pin { position: absolute; transform: translate(-50%, -50%); }
+.kit-pin__dot {
+  width: var(--s6); height: var(--s6); border-radius: 50%;
+  background: var(--glass-strong); border: 1px solid var(--ink-max);
+  color: var(--ink-max); font-size: var(--text-xs); cursor: pointer;
+  display: grid; place-items: center;
+  transition: transform var(--t-fast) var(--ease);
+}
+.kit-pin__dot:hover { transform: scale(1.12); }
+.kit-pin__card { position: absolute; left: var(--s8); top: 0; width: 14rem; padding: var(--s3); }
+.kit-pin__title { margin: 0 0 var(--s1); font-size: var(--text-sm); color: var(--ink-max); }

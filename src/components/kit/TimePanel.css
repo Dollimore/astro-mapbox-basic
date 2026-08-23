@@ -1,0 +1,17 @@
+.kit-time { position: absolute; bottom: var(--s4); left: var(--s4); padding: var(--s3) var(--s4); min-width: 20rem; display: flex; flex-direction: column; gap: var(--s2); }
+.kit-time__head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); }
+.kit-time__value { font-size: var(--text-xl); color: var(--ink-max); }
+.kit-time__controls { display: flex; align-items: center; gap: var(--s3); }
+.kit-time__play {
+  width: var(--s6); height: var(--s6); display: grid; place-items: center;
+  background: transparent; border: 1px solid var(--glass-border); border-radius: var(--radius-chip);
+  color: var(--ink); cursor: pointer; font-size: var(--text-xs);
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.kit-time__play:hover { color: var(--ink-max); border-color: var(--hairline); }
+.kit-time__track { flex: 1; position: relative; }
+.kit-time__track input[type="range"] { width: 100%; accent-color: var(--ink); }
+.kit-time__ticks { display: flex; justify-content: space-between; margin-top: var(--s1); }
+.kit-time__tick { width: 1px; height: var(--s2); background: var(--glass-border); }
+.kit-time__tick[data-on="true"] { background: var(--ink-dim); }
+@media (max-width: 640px) { .kit-time { left: var(--s2); right: var(--s2); min-width: 0; bottom: 7rem; } }
