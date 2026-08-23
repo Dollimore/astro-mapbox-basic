@@ -71,6 +71,19 @@ test.describe('kit components', () => {
     await expect(page.getByTestId('legend-item')).toHaveCount(4);
   });
 
+  test('legend swatches actually carry colour', async ({ page }) => {
+    // Regression: theme colours read during the render body resolve to
+    // `transparent`, because CSS custom properties are not available until the
+    // stylesheet is applied. The legend rendered empty while the map looked fine.
+    const swatches = page.locator('.kit-legend__swatch');
+    await expect(swatches).toHaveCount(4);
+    for (let i = 0; i < 4; i++) {
+      const bg = await swatches.nth(i).evaluate((el) => getComputedStyle(el).backgroundColor);
+      expect(bg, `swatch ${i} background`).not.toBe('rgba(0, 0, 0, 0)');
+      expect(bg, `swatch ${i} background`).not.toBe('transparent');
+    }
+  });
+
   test('time panel scrubs and plays', async ({ page }) => {
     await expect(page.getByTestId('time-value')).toHaveText('2014');
     await page.getByTestId('time-slider').fill('2020');

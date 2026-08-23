@@ -12,7 +12,7 @@ import { StoryCard } from '../kit/StoryCard.js';
 import { StoryPin } from '../kit/StoryPin.js';
 import { StampMark } from '../kit/StampMark.js';
 import { loadFeatures } from '../../lib/loadData.js';
-import { statusColours } from '../../theme/map-style.js';
+import { useStatusColours } from '../../lib/useStatusColours.js';
 import { titleCase } from '../../lib/format.js';
 import type { Feature } from '../../data/schema.js';
 
@@ -31,7 +31,7 @@ export function HelloMap() {
     m.on('move', () => setTick((t) => t + 1));
   }, []);
 
-  const colours = statusColours();
+  const colours = useStatusColours();
   const pins = features.slice(0, 4);
   const operational = features.filter((f) => f.status === 'operational').length;
 
@@ -58,15 +58,17 @@ export function HelloMap() {
         onPlayToggle={() => setPlaying((p) => !p)} onChange={setYear}
       />
 
-      <LegendCanvas
-        mode="swatches" title="Status"
-        items={[
-          { label: 'Operational', colour: colours.operational },
-          { label: 'Construction', colour: colours.construction },
-          { label: 'Announced', colour: colours.announced },
-          { label: 'Halted', colour: colours.halted },
-        ]}
-      />
+      {colours && (
+        <LegendCanvas
+          mode="swatches" title="Status"
+          items={[
+            { label: 'Operational', colour: colours.operational },
+            { label: 'Construction', colour: colours.construction },
+            { label: 'Announced', colour: colours.announced },
+            { label: 'Halted', colour: colours.halted },
+          ]}
+        />
+      )}
 
       {map && pins.map((f, i) => {
         const pt = map.project([f.lng, f.lat]);
