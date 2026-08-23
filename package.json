@@ -23,7 +23,9 @@
     "check:ship": "npm run ci",
     "predeploy": "npm run ci",
     "deploy": "wrangler deploy",
-    "test:visual": "npm run build && playwright test"
+    "test:visual": "npm run build && playwright test",
+    "smoke:dev": "tsx scripts/checks/smoke-dev.ts",
+    "dev:clean": "rm -rf node_modules/.vite .astro && npm run dev"
   },
   "dependencies": {
     "@astrojs/react": "6.0.4",
