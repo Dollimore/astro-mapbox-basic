@@ -18,7 +18,11 @@
     "check:env": "tsx scripts/checks/env.ts",
     "check:data": "tsx scripts/checks/data.ts",
     "check:tokens": "tsx scripts/checks/tokens.ts",
-    "check:dist": "npm run build && tsx scripts/checks/dist.ts"
+    "check:dist": "npm run build && tsx scripts/checks/dist.ts",
+    "ci": "npm run typecheck && npm run check:toolchain && npm run check:tokens && npm run check:data && npm run check:env && npm run check:secrets && npm run check:dist",
+    "check:ship": "npm run ci",
+    "predeploy": "npm run ci",
+    "deploy": "wrangler deploy"
   },
   "dependencies": {
     "@astrojs/react": "6.0.4",
@@ -29,6 +33,7 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
+    "@types/node": "^26.2.0",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
     "lefthook": "2.1.10",
