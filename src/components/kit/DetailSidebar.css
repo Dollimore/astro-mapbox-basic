@@ -1,23 +1,24 @@
 .kit-detail {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
+  /* Floating panel, not a flush drawer: 1rem clear of the top, bottom and left
+     so the map reads as continuous underneath it. */
+  top: var(--s4);
+  bottom: var(--s4);
+  left: var(--s4);
   width: var(--detail-width);
-  max-width: 100vw;
+  max-width: calc(100vw - var(--s8));
   display: flex;
   flex-direction: column;
 
   background-color: var(--glass-strong);
   backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
-  border-left: 1px solid var(--stroke);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-2xl);
   box-shadow: var(--glass-shadow);
+  overflow: hidden;
 
-  padding-top: var(--safe-top);
-  padding-bottom: var(--safe-bottom);
-
-  transform: translateX(100%);
+  transform: translateX(calc(-100% - var(--s8)));
   opacity: 0;
   visibility: hidden;
   transition:
@@ -111,13 +112,13 @@
   /* Mobile: a bottom sheet, not a side panel. */
   .kit-detail {
     top: auto;
-    left: 0;
+    left: var(--s2);
+    right: var(--s2);
+    bottom: var(--s2);
     width: auto;
+    max-width: none;
     max-height: 62vh;
-    border-left: 0;
-    border-top: 1px solid var(--stroke);
-    border-radius: var(--radius-panel) var(--radius-panel) 0 0;
-    transform: translateY(100%);
+    transform: translateY(calc(100% + var(--s4)));
   }
   .kit-detail[data-open="true"] { transform: translateY(0); }
 }

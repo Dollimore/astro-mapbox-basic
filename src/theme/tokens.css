@@ -188,8 +188,9 @@
   --sidebar-width-icon: 4rem;
   --detail-width: 22rem;
 
-  /* Right-anchored chrome adds this, so panels slide clear of an open sidebar
-     instead of hiding behind it. MapRoot sets it; default 0 means no shift. */
+  /* Chrome adds these so panels slide clear of an open sidebar instead of
+     hiding behind it. MapRoot sets them; default 0 means no shift. */
+  --chrome-inset-left: 0px;
   --chrome-inset-right: 0px;
 
   --ease:   cubic-bezier(0.22, 1, 0.36, 1);

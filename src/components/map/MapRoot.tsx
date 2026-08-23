@@ -10,7 +10,9 @@ export type MapRootProps = {
   zoom?: number;
   children?: ReactNode;
   onReady?: (map: mapboxgl.Map) => void;
-  /** CSS length the right-anchored chrome should clear, e.g. an open sidebar. */
+  /** CSS length the left-anchored chrome should clear, e.g. an open sidebar. */
+  insetLeft?: string;
+  /** CSS length the right-anchored chrome should clear. */
   insetRight?: string;
 };
 
@@ -19,6 +21,7 @@ export function MapRoot({
   zoom = 10.5,
   children,
   onReady,
+  insetLeft = '0px',
   insetRight = '0px',
 }: MapRootProps) {
   const container = useRef<HTMLDivElement>(null);
@@ -85,7 +88,10 @@ export function MapRoot({
       )}
       <div
         className="map-root__chrome"
-        style={{ ['--chrome-inset-right' as string]: insetRight }}
+        style={{
+          ['--chrome-inset-left' as string]: insetLeft,
+          ['--chrome-inset-right' as string]: insetRight,
+        }}
       >
         {children}
       </div>

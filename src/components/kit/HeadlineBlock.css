@@ -1,7 +1,8 @@
 .kit-headline {
   position: absolute;
   top: var(--s4);
-  left: var(--s4);
+  left: calc(var(--s4) + var(--chrome-inset-left, 0px));
+  transition: left var(--t-slow) var(--ease);
   padding: var(--s4);
   max-width: 24rem;
   display: flex;

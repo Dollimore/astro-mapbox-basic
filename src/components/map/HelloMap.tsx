@@ -54,7 +54,7 @@ export function HelloMap() {
   const maxValue = Math.max(...features.map((f) => f.value ?? 0), 1);
 
   return (
-    <MapRoot onReady={handleReady} insetRight={selected ? 'var(--detail-width)' : '0px'}>
+    <MapRoot onReady={handleReady} insetLeft={selected ? 'calc(var(--detail-width) + var(--s4))' : '0px'}>
       <FeaturesLayer map={map} features={features} palette={palette} onSelect={setSelected} />
 
       <HeadlineBlock title="astro-mapbox-basic" subline="A basic Astro + Mapbox boilerplate" live>
