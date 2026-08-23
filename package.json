@@ -16,7 +16,9 @@
     "check:toolchain": "tsx scripts/checks/toolchain.ts",
     "postinstall": "lefthook install",
     "check:env": "tsx scripts/checks/env.ts",
-    "check:data": "tsx scripts/checks/data.ts"
+    "check:data": "tsx scripts/checks/data.ts",
+    "check:tokens": "tsx scripts/checks/tokens.ts",
+    "check:dist": "npm run build && tsx scripts/checks/dist.ts"
   },
   "dependencies": {
     "@astrojs/react": "6.0.4",

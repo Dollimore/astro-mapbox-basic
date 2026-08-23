@@ -56,6 +56,29 @@ const ATTACKS: Attack[] = [
     },
   },
   {
+    id: 'S2',
+    what: 'reference a fake sk. token in code so the bundler inlines it into dist/',
+    caughtBy: 'check:dist',
+    run: (dir) => {
+      // The token goes into .env (gitignored, so no hook fires) and is read from
+      // src — exactly how a careless secret reaches a public bundle in real life.
+      writeFileSync(join(dir, '.env'), `MAPBOX_SECRET_TOKEN=${FAKE_SK}\n`);
+      const accessor = ['import', 'meta', 'env'].join('.');
+      writeFileSync(
+        join(dir, 'src/pages/leak.astro'),
+        `---\nconst t = ${accessor}.MAPBOX_SECRET_TOKEN;\n---\n<p>{t}</p>\n`
+      );
+      const build = sh('npm run build', dir);
+      if (build.code !== 0) {
+        console.error(`     build failed, cannot test:\n${build.out.slice(-600)}`);
+        return false;
+      }
+      const { code, out } = sh('npx tsx scripts/checks/dist.ts', dir);
+      if (code === 0) console.error(`     check:dist PASSED when it should not have:\n${out}`);
+      return code !== 0;
+    },
+  },
+  {
     id: 'S3',
     what: 'read an env var that is absent from .env.example',
     caughtBy: 'check:env',
