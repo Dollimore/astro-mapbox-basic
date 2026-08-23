@@ -1,13 +1,31 @@
 name: ci
 on: [push, pull_request]
 
+env:
+  # Pinned so CI and a laptop run the identical binary. check:toolchain refuses
+  # to proceed without it, because a secrets layer you cannot verify is not one.
+  GITLEAKS_VERSION: 8.30.1
+
 jobs:
   gate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-        with: { fetch-depth: 0 }
+        with: { fetch-depth: 0 }   # full history so gitleaks can scan all of it
+
       - uses: actions/setup-node@v5
         with: { node-version-file: '.nvmrc', cache: 'npm' }
+
+      - name: Install gitleaks
+        run: |
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin gitleaks
+          gitleaks version
+
       - run: npm ci
+
+      # The same single command a developer runs. One gate, one source of truth;
+      # this job exists only to catch --no-verify and forks with hooks disabled.
       - run: npm run ci
+
+      - run: npm run test:sabotage
