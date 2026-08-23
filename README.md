@@ -14,7 +14,7 @@ are already made.
 ## Quickstart
 
 ```bash
-git clone https://github.com/mickydollimore/astro-mapbox-basic my-map
+git clone https://github.com/Dollimore/astro-mapbox-basic my-map
 cd my-map
 npm install
 cp .env.example .env      # then add your Mapbox pk. token
