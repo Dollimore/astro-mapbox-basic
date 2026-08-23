@@ -1,5 +1,34 @@
 # CHANGELOG
 
+## v0.2 — 2026-08-24
+
+Second theme, proving the theme system: a full semantic light/dark re-skin with
+**zero changes to any existing kit component**. Everything visual lives in
+`src/theme/`, and re-pointing that folder re-skinned the product.
+
+- Semantic token layer: canvas/raised/sunken/stroke/primary/strong/subtle plus
+  info/success/alert/danger triads, flipped by `[data-mode]`. Status colours ride
+  it, so they re-tune between the 700-step in light and the 300-step in dark.
+- New components: `DetailSidebar` (floating left panel, 1rem inset, 1rem radius),
+  `StatTile`, `Gauge`. Thirteen components total.
+- Mode toggle by composition through `ControlStack`; the basemap follows the mode.
+
+Bugs found by looking at pixels rather than trusting green tests:
+
+- **mapbox-gl parses CSS Color Level 3 only.** The oklch palette rendered
+  correctly in the DOM — the legend was right — while the map refused it and
+  dropped every circle. Colours are rasterised through a canvas pixel; reading
+  back `ctx.fillStyle` is not enough, Chrome re-serialises oklch as oklch.
+- **`setStyle` broke dark mode invisibly.** The layer was present, on top,
+  correctly coloured, ten features rendered — and nothing painted. The map is now
+  rebuilt for the new mode, preserving the viewport.
+- **60% panel fill is unreadable over live tiles.** The source theme's value is
+  kept verbatim as `--panel-fill`; map chrome uses `--panel-fill-map` at 92%.
+- **Mobile legend covered the time panel's play button.**
+- **`smoke:dev` added.** Every test ran against `astro preview`, so a stale Vite
+  dep cache 504'd mapbox-gl on the dev server and killed hydration while the suite
+  stayed green. `curl` returning 200 on the HTML proves nothing about the client.
+
 ## v0.1 — 2026-08-23
 
 First release. Ten kit components over a live Mapbox Outdoors map, a three-file
