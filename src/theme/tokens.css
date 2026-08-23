@@ -1,0 +1,40 @@
+:root {
+  /* ink — monochrome UI, no accent in chrome. The map carries all colour. */
+  --ink: #F5F2EE;
+  --ink-dim: #9A9A96;
+  --ink-max: #FFFFFF;
+
+  /* liquid glass surfaces */
+  --glass: rgba(12, 12, 12, 0.72);
+  --glass-strong: rgba(12, 12, 12, 0.86);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 16px;
+  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --hairline: rgba(255, 255, 255, 0.12);
+
+  /* type */
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+  --font-ui: "Inter", system-ui, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+
+  /* space + shape */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s6: 24px; --s8: 32px;
+  --radius-panel: 14px;
+  --radius-chip: 8px;
+  --radius-stamp: 2px;
+
+  /* motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast: 140ms;
+  --t-med: 240ms;
+
+  /* data status accents — the ONLY colour a project chooses */
+  --status-operational: #1F7A4D;
+  --status-construction: #D89A2B;
+  --status-announced: #5A6B7C;
+  --status-halted: #B23B3B;
+}

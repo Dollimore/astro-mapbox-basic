@@ -1,0 +1,24 @@
+---
+import '../theme/tokens.css';
+import '../theme/recipes.css';
+
+interface Props { title: string; description?: string; }
+const { title, description = 'A basic Astro + Mapbox map.' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://api.mapbox.com" />
+  </head>
+  <body>
+    <slot />
+    <style is:global>
+      html, body { margin: 0; height: 100%; background: var(--glass-strong); }
+      body { font-family: var(--font-ui); color: var(--ink); }
+    </style>
+  </body>
+</html>

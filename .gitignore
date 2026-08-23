@@ -8,3 +8,5 @@ data-pipeline/raw/
 *.mbtiles
 *.pmtiles
 .DS_Store
+test-results/
+playwright-report/

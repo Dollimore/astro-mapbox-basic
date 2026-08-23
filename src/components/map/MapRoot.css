@@ -1,0 +1,17 @@
+.map-root { position: fixed; inset: 0; }
+.map-root__canvas { position: absolute; inset: 0; }
+.map-root__chrome { position: absolute; inset: 0; pointer-events: none; }
+.map-root__chrome > * { pointer-events: auto; }
+
+.map-root__error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  padding: var(--s8);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--ink-dim);
+  background: var(--glass-strong);
+  text-align: center;
+}

@@ -22,7 +22,8 @@
     "ci": "npm run typecheck && npm run check:toolchain && npm run check:tokens && npm run check:data && npm run check:env && npm run check:secrets && npm run check:dist",
     "check:ship": "npm run ci",
     "predeploy": "npm run ci",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "test:visual": "npm run build && playwright test"
   },
   "dependencies": {
     "@astrojs/react": "6.0.4",
@@ -33,6 +34,7 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@types/node": "^26.2.0",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
