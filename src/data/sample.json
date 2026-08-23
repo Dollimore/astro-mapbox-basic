@@ -1,0 +1,12 @@
+[
+  { "id": "sg-01", "name": "Jurong West Node",   "lat": 1.3496, "lng": 103.7061, "status": "operational",  "value": 42, "source_url": "https://example.org/sample/1" },
+  { "id": "sg-02", "name": "Tuas Landing",       "lat": 1.2966, "lng": 103.6360, "status": "construction", "value": 30, "source_url": "https://example.org/sample/2" },
+  { "id": "sg-03", "name": "Changi East Hall",   "lat": 1.3644, "lng": 103.9915, "status": "announced",    "value": 18, "source_url": "https://example.org/sample/3" },
+  { "id": "sg-04", "name": "Woodlands Exchange", "lat": 1.4382, "lng": 103.7890, "status": "operational",  "value": 55, "source_url": "https://example.org/sample/4" },
+  { "id": "sg-05", "name": "Paya Lebar Annex",   "lat": 1.3187, "lng": 103.8931, "status": "halted",                    "source_url": "https://example.org/sample/5" },
+  { "id": "sg-06", "name": "Kallang Basin Site", "lat": 1.3080, "lng": 103.8710, "status": "construction", "value": 24, "source_url": "https://example.org/sample/6" },
+  { "id": "sg-07", "name": "Loyang Works",       "lat": 1.3691, "lng": 103.9640, "status": "operational",  "value": 12, "source_url": "https://example.org/sample/7" },
+  { "id": "sg-08", "name": "Sembawang Point",    "lat": 1.4491, "lng": 103.8185, "status": "announced",    "value": 60, "source_url": "https://example.org/sample/8" },
+  { "id": "sg-09", "name": "Bukit Batok Vault",  "lat": 1.3490, "lng": 103.7495, "status": "operational",  "value": 33, "source_url": "https://example.org/sample/9" },
+  { "id": "sg-10", "name": "Seletar Yard",       "lat": 1.4050, "lng": 103.8730, "status": "construction", "value": 27, "source_url": "https://example.org/sample/10" }
+]
