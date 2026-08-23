@@ -10,7 +10,11 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:secrets": "gitleaks detect --no-banner --redact",
+    "test:sabotage": "tsx scripts/checks/sabotage.ts",
+    "check:toolchain": "tsx scripts/checks/toolchain.ts",
+    "postinstall": "lefthook install"
   },
   "dependencies": {
     "@astrojs/react": "6.0.4",

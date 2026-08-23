@@ -1,42 +1,13 @@
-# EXAMPLE USAGE:
-#
-#   Refer for explanation to following link:
-#   https://lefthook.dev/configuration/
-#
-# pre-push:
-#   jobs:
-#     - name: packages audit
-#       tags:
-#         - frontend
-#         - security
-#       run: yarn audit
-#
-#     - name: gems audit
-#       tags:
-#         - backend
-#         - security
-#       run: bundle audit
-#
-# pre-commit:
-#   parallel: true
-#   jobs:
-#     - run: yarn eslint {staged_files}
-#       glob: "*.{js,ts,jsx,tsx}"
-#
-#     - name: rubocop
-#       glob: "*.rb"
-#       exclude:
-#         - config/application.rb
-#         - config/routes.rb
-#       run: bundle exec rubocop --force-exclusion -- {all_files}
-#
-#     - name: govet
-#       files: git ls-files -m
-#       glob: "*.go"
-#       run: go vet -- {files}
-#
-#     - script: "hello.js"
-#       runner: node
-#
-#     - script: "hello.go"
-#       runner: go run
+# The commit-time layer. Fires for agent commits identically to human ones —
+# a commit containing a token physically fails, whoever made it.
+pre-commit:
+  parallel: true
+  commands:
+    gitleaks:
+      run: gitleaks git --staged --no-banner --redact
+    token-literal:
+      run: |
+        if git diff --staged -G'(pk|sk)\.ey[A-Za-z0-9._-]{20,}' --name-only | grep -q .; then
+          echo "✗ Mapbox token literal found in staged changes. Read docs/SECRETS.md."
+          exit 1
+        fi

@@ -1,0 +1,19 @@
+# Extend gitleaks' default rules. Verified empirically by sabotage S1: gitleaks
+# ships NO Mapbox rule, so without this the pre-commit regex was the only thing
+# catching a leaked token. Defence in depth means both layers see it.
+[extend]
+useDefault = true
+
+[[rules]]
+id = "mapbox-token"
+description = "Mapbox access token (pk. or sk.)"
+regex = '''\b(pk|sk)\.ey[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}'''
+tags = ["mapbox", "token"]
+
+# Allowlist the ONE known-fake fixture by its content, never by path.
+# A path allowlist would let a real token hide inside the sabotage script;
+# this matches only a payload that decodes to {"u":"fakeuser"}.
+[[rules.allowlists]]
+description = "Known-fake fixture token used by the sabotage suite and quoted in the plan docs."
+regexTarget = "match"
+regexes = ['''(pk|sk)\.eyJ1IjoiZmFrZXVzZXIi[A-Za-z0-9._-]*''']
